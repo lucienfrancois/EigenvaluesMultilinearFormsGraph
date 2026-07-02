@@ -24,5 +24,5 @@ In the folder [`Orbits233`](Orbits233/) you will find magma programs that give m
 The computed spectrums are stored in the three files below as follows. For any integer `i` in the number of lines in the csv below, the `i`-th line of the `SUMMARY` file provides the parameters q,n1,...,nm of the tensor space *(of size n1 x ... x nm over Fq)* such that the `i`-th line of the `EIGENVALUE` file contains the different eigenvalues of the multilinear forms graph spectrum for such parameters, and whose multiplicities can be found (with the same order) in the `MULTIPLICITIES` file.
 + The file [`DATASET_EIGENVALUES_KnownSpectra.csv`](DATASET_EIGENVALUES_KnownSpectra.csv/) contains lines of the form $\theta_0$, $\theta_1$, ... , $\theta_r$
 + The file [`DATASET_MULTIPLICITIES_KnownSpectra.csv`](DATASET_MULTIPLICITIES_KnownSpectra.csv/) contains lines of the form $m_0$, $m_1$, .... , $m_r$
-+ The file [`DATASET_SUMMARY_KnownSpectra.csv`](DATASET_SUMMARY_KnownSpectra.csv/) contains lines of the form $q$, $n_1$, ... ,$n_m$.
++ The file [`DATASET_SUMMARY_KnownSpectra.csv`](DATASET_SUMMARY_KnownSpectra.csv/) contains lines of the form $q$, $n_1$, ... , $n_m$.
 
