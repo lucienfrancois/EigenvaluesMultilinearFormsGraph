@@ -1,6 +1,6 @@
 # EigenvaluesMultilinearFormsGraph
   
-**   ||In construction...||   **
+  **||In construction...||**
   
 ### Introduction
 This repository contains code, data and additional material associated to the work Eimear Byrne and I have done on the multilinear froms graph eigenvalues and its applications to tensor-codes bounds. The functions are directly related to the work done in the article mentionned below. Namely, there are MAGMA files that compute the spectrum of the multilinear forms graph using its dual characterisation and you will also find functions that accompanies the article heavy computations for the case of 2x3x3 tensors.
