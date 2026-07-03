@@ -105,7 +105,7 @@ function CountStab(V)
 
     /*
         Add other techniques here to reduce the complexity by reducing the number of
-        ennumerated matrices : use right 
+        ennumerated matrices : use intersection and sums of right (resp left) kernels of V, use flags, use permutation group for low dimension....
     */
 
     count := 0;
