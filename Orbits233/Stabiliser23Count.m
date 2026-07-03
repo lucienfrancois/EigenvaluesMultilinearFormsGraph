@@ -25,7 +25,7 @@ function Space(q,str)
     elif str eq "2" then //====================================================
         return sub<Amb | {[1,0,0, 0,0,0], [0,1,0, 0,0,0]} >;
     elif str eq "4T" then //====================================================
-        return sub<Amb | {[1,0,0, 0,0,0], [0,0,0, 0,1,0]} >;
+        return sub<Amb | {[1,0,0, 0,0,0], [0,0,0, 1,0,0]} >;
     elif str eq "5" then //====================================================
         return sub<Amb | {[1,0,0, 0,0,0], [0,0,0, 0,1,0]} >;
     elif str eq "6" then //====================================================
@@ -136,7 +136,9 @@ end procedure;
 //========= This is an example ====================
 /*
 
-> V := Space(3,"7T");
+> V := Space(3,"7T");       
+> V;
+KMatrixSpace of 2 by 3 matrices and dimension 3 over GF(3)
 > Basis(V);
 [
     [1 0 0]
@@ -155,7 +157,7 @@ Orbit 0 :        539136
 Orbit 1 :        10368 
 Orbit 4 :        1728 
 Orbit 2 :        10368 
-Orbit 4T :       576 
+Orbit 4T :       41472 
 Orbit 5 :        576 
 Orbit 6 :        1296 
 Orbit 7 :        144 
@@ -172,5 +174,6 @@ Orbit 14 :       96
 Orbit 15 :       64 
 Orbit 16 :       216 
 Orbit 17 :       156 
+
 
 */
