@@ -1,5 +1,5 @@
 /*
-    ===/ Version 02 07 2026 /===
+    ===/ Version 03 September 2026 /===
     Author: Lucien François, University College Dublin
 
 
@@ -67,11 +67,8 @@ MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     <"MF_PrimePowersUpTo(m)", "Returns the list of prime powers p^eta that are less or equal than m.", "ARITH", "\tm: positive integer.">
 );
 
+/*
 function MF_LongestConsecutiveSequence(SeqInt)
-    /*
-        Given a sequence of integers, find the longest consecutive sequence.
-        Returns <BestFound,BestLength> where BestFound = <start,end> are two elements of SeqInt. For instance, if SeqInt = [1,2,3,5,6,10], the function returns < <1,3>, 3 > since the longest consecutive sequence is 1,2,3 and has length 3.
-    */
     if SeqInt ne Sort(SeqInt) then
         return Sort(SeqInt);
     end if;
@@ -109,7 +106,7 @@ MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
     <"MF_LongestConsecutiveSequence(SeqInt)", "Given an ordered sequence of integers, find the longest consecutive sequence. Returns <BestFound,BestLength> where BestFound = <start,end> are two elements of SeqInt.", "ARITH", "\tSeqInt: sequence of integers.">
 );
-
+*/
 
 
 
@@ -317,11 +314,8 @@ MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     <"MF_NbTrankTwo(q,N)", "Counts the number of tensors of trank 2 in (Fq^N1 otimes ... otimes Fq^Nk) for k=1,2,3.", "CMBTRCS", "\tq: prime power,\n\tN = [N1,...,Nk]: non-empty sequence of nonnegative integers with k=1,2,3.">
 );
 
+/*
 function MF_SmallestRectangle(SET,n)
-    /*
-    Given a SET of plane integer points in [[0,n-1]]², stored as length-2 sequences, find the 
-    smallest rectangle modulo n containing all the points.
-    */
     SETx := { s[1] : s in SET} join { s[1] - n : s in SET};
     SETy := { s[2] : s in SET} join { s[2] - n : s in SET};
     CPLTx := SetToSequence({-n..n-1} diff SETx);
@@ -336,7 +330,7 @@ MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
     <"MF_SmallestRectangle(SET,n)", "Given a SET of plane integer points in [[0,n-1]]², stored as length-2 sequences, find the smallest rectangle modulo n containing all the points. Returns <<x_min,x_max>,<y_min,y_max>,width,height>.", "CMBTRCS", "\tSET: set of length-2 sequences representing points in [[0,n-1]]².\n\tn: integer.">
 );
-
+*/
 
 
 
@@ -366,19 +360,19 @@ MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     <"MF_IntToqary(n,q,size)", "Converts an integer n in {0..q^size-1} to a sequence in {0,..,q-1} of length size such that n = sum_{i=0}^{size-1} a_i * (q^(i)) .", "BIJCTNS", "\tn: integer,\n\tq: integer,\n\tsize: integer.">
 );
 
-function MF_qarytoInt(seq, q)
+function MF_qaryToInt(seq, q)
     /*
         Converts a sequence in {0,..,q-1} of length size to an integer 0 <= n < q^(size)
         such that n = sum_{i=0}^{size-1} a_i * (q^(i)) .
     */
     if exists{j : j in [1..#seq] | seq[j] lt 0 or seq[j] ge q} then
-        error MAGMAFUNCTIONS_FormatError("MF_qarytoInt", < <"seq", seq>, <"q", q> >, "All entries of seq must be in {0,.., q - 1}.");
+        error MAGMAFUNCTIONS_FormatError("MF_qaryToInt", < <"seq", seq>, <"q", q> >, "All entries of seq must be in {0,.., q - 1}.");
     end if;
     size := #seq;
     n := 0;
     for i in [1..size] do
         if seq[i] lt 0 or seq[i] ge q then
-            error MAGMAFUNCTIONS_FormatError("MF_qarytoInt", < <"seq", seq>, <"q", q> >, "All entries of seq must be in {0,.., q - 1}.");
+            error MAGMAFUNCTIONS_FormatError("MF_qaryToInt", < <"seq", seq>, <"q", q> >, "All entries of seq must be in {0,.., q - 1}.");
         end if;
         n +:= seq[i] * (q^(i - 1));
     end for;
@@ -386,7 +380,7 @@ function MF_qarytoInt(seq, q)
 end function;
 MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
-    <"MF_qarytoInt(seq,q)", "Converts a sequence in {0,..,q-1} of length size to an integer 0 <= n < q^(size) such that n = sum_{i=0}^{size-1} a_i * (q^(i)) .", "BIJCTNS", "\tseq: sequence of integers,\n\tq: integer.">
+    <"MF_qaryToInt(seq,q)", "Converts a sequence in {0,..,q-1} of length size to an integer 0 <= n < q^(size) such that n = sum_{i=0}^{size-1} a_i * (q^(i)) .", "BIJCTNS", "\tseq: sequence of integers,\n\tq: integer.">
 );
 
 procedure MF_BijectionqaryTest(q, size)
@@ -397,7 +391,7 @@ procedure MF_BijectionqaryTest(q, size)
         printf "n = %o: ", n;
         seq := MF_IntToqary(n, q, size);
         printf "seq = %o; ", seq;
-        m := MF_qarytoInt(seq, q);
+        m := MF_qaryToInt(seq, q);
         printf "m = %o\n", m;
         if n ne m then
             error MAGMAFUNCTIONS_FormatError("MF_BijectionqaryTest", < <"q", q>, <"size", size>, <"n", n>, <"m", m> >, "Bijection test failed: the round-trip n -> seq -> m was not exact.");
@@ -407,7 +401,7 @@ procedure MF_BijectionqaryTest(q, size)
 end procedure;
 MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
-    <"MF_BijectionqaryTest(q,size)", "Tests the bijections MF_IntToqary(n,q,size) and MF_qarytoInt(seq,q) between integers and q-ary sequences of given size.", "TEST", "\tq: integer,\n\tsize: integer.">
+    <"MF_BijectionqaryTest(q,size)", "Tests the bijections MF_IntToqary(n,q,size) and MF_qaryToInt(seq,q) between integers and q-ary sequences of given size.", "TEST", "\tq: integer,\n\tsize: integer.">
 );
 
 function MF_IntToFq(n, q)
@@ -495,7 +489,7 @@ function MF_VSpaceToInt(x)
                 VectorSpace(GF(q),Vdim) -> [0..Vdim-1]
                 (x_1,...,x_k) -> n = sum_{i=0}^{Vdim-1} FqtoInt(x_i) * (q^(i))
     */
-    q := #(Parent(x));
+    q := #(Parent(x[1]));
     return &+ [MF_FqtoInt(x[i]) * (q^(i - 1)) : i in [1..Dimension(Parent(x))]];
 end function;
 MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
@@ -599,21 +593,166 @@ end procedure;
 //          LINEAR ALGEBRA
 //===========================================================
 
-function MF_RandomBasisOfTheField(Fn, F, n)
+function MF_RandomBasisOfTheField(Fn, F)
     /*
-        Returns a random basis of the extension Fn of degree n over F.
+        Returns a uniformly chosen at random basis of the extension Fn over F for Fn a finite field extension of F.
     */
+    if Type(Fn) ne FldFin or Type(F) ne FldFin then
+        error MAGMAFUNCTIONS_FormatError("MF_RandomBasisOfTheField", < <"Fn", Fn>, <"F", F> >, "Fn and F must be finite fields.");
+    end if;
+    if not IsDivisibleBy(#Fn, #F) then
+        error MAGMAFUNCTIONS_FormatError("MF_RandomBasisOfTheField", < <"Fn", Fn>, <"F", F> >, "Fn must be a finite field extension of F.");
+    end if;
     Fnvs, phi := VectorSpace(Fn, F);
-    B := [Random(Fnvs) : i in [1..n]];
-    while Dimension(sub<Fnvs | B>) ne n do
-        B := [Random(Fnvs) : i in [1..n]];
-    end while;
-    return Inverse(phi)(B);
+    n := Dimension(Fnvs);
+    B := [Fnvs.i : i in [1..n]];
+    P := Random(GL(n, F));
+    rdmB := [ &+[P[i][j] * B[j] : j in [1..n]] : i in [1..n]];
+    return [Inverse(phi)(rdmB[i]) : i in [1..n]];
 end function;
 MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
-    <"MF_RandomBasisOfTheField(Fn,F,n)", "Returns a random basis of the extension Fn of degree n over F.", "LINALG", "\tFn: field,\n\tF: subfield of Fn,\n\tn: positive integer.">
+    <"MF_RandomBasisOfTheField(Fn,F)", "Returns a uniformly chosen at random basis of the extension Fn over F for Fn a finite field extension of F.", "LINALG", "\tFn: finite field,\n\tF: finite field.">
 );
+
+function MF_Moore(alpha,q : nbcol:="not_specified")
+    /*
+        Given alpha a sequence of elements in a finite field, given q an integer, returns the Moore matrix of alpha with respect to q, i.e. the matrix 
+        
+        alpha_1  alpha_1^q   ...   alpha_1^(q^(k-1))
+        alpha_2  alpha_2^q   ...   alpha_2^(q^(k-1))
+         ...       ...       ...        ...
+        alpha_n  alpha_n^q   ...   alpha_n^(q^(k-1))
+        
+        where k is 
+          [if nbcol unspecified] the degree of the field extension of elements of alpha over GF(q), or
+          [if nbcol specified] the value of nbcol.
+    */
+
+    if Type(alpha) ne SeqEnum then
+        error MAGMAFUNCTIONS_FormatError("MF_Moore", < <"alpha", alpha>, <"q", q>, <"nbcol", nbcol> >, "alpha must be a sequence of elements in a finite field.");
+    end if;
+    if #alpha eq 0 then
+        error MAGMAFUNCTIONS_FormatError("MF_Moore", < <"alpha", alpha>, <"q", q>, <"nbcol", nbcol> >, "alpha must be a non-empty sequence of elements in a finite field.");
+    end if;
+    if Type(alpha[1]) ne FldFinElt then
+        error MAGMAFUNCTIONS_FormatError("MF_Moore", < <"alpha", alpha>, <"q", q>, <"nbcol", nbcol> >, "alpha must be a sequence of elements in a finite field.");
+    end if;
+    Fn := Parent(alpha[1]);
+    
+    if Type(nbcol) ne RngIntElt and (Type(nbcol) ne MonStgElt or nbcol ne "not_specified") then
+        error MAGMAFUNCTIONS_FormatError("MF_Moore", < <"alpha", alpha>, <"q", q>, <"nbcol", nbcol> >, "nbcol must be an integer.");
+    end if;
+
+    if Type(nbcol) eq MonStgElt and nbcol eq "not_specified" then
+        k := Degree(Fn, GF(q));
+    else
+        k := nbcol;
+    end if;
+
+    M := ZeroMatrix(Fn, #alpha, k);
+    for i in [1..#alpha] do
+        for j in [1..k] do
+            M[i][j] := alpha[i]^(q^(j-1));
+        end for;
+    end for;
+
+    return M;
+end function;
+MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
+    MAGMAFUNCTIONS_registery,
+    <"MF_Moore(alpha,q : nbcol)", "Given alpha a sequence of elements in a finite field, given q an integer, returns the Moore matrix of alpha with respect to q.", "LINALG", "\talpha: sequence of elements in a finite field,\n\tq: integer,\n\tnbcol: [optional] integer specifying the number of columns of the Moore matrix.">
+);
+
+function MF_Dickson(alpha,q)
+    /*
+        Given alpha = [alpha_1,...,alpha_n] a sequence of elements in a finite field, given q an integer dividing #Parent(alpha[1]), returns the Dickson matrix of alpha with respect to q, i.e. the matrix
+
+        alpha_1  alpha_(n-1)^q   alpha_(n-2)^(q^2)   ...   alpha_2^(q^(n-1))
+        alpha_2  alpha_1^q       alpha_(n-1)^(q^2)   ...   alpha_3^(q^(n-1))
+         ...       ...             ...               ...    ...
+        alpha_n  alpha_(n-1)^q   alpha_(n-2)^(q^2)   ...   alpha_1^(q^(n-1))  
+
+    */
+    if Type(alpha) ne SeqEnum then
+        error MAGMAFUNCTIONS_FormatError("MF_Dickson", < <"alpha", alpha>, <"q", q> >, "alpha must be a sequence of elements in a finite field.");
+    end if;
+    if #alpha eq 0 then
+        error MAGMAFUNCTIONS_FormatError("MF_Dickson", < <"alpha", alpha>, <"q", q> >, "alpha must be a non-empty sequence of elements in a finite field.");
+    end if;
+    if Type(alpha[1]) ne FldFinElt then
+        error MAGMAFUNCTIONS_FormatError("MF_Dickson", < <"alpha", alpha>, <"q", q> >, "alpha must be a sequence of elements in a finite field.");
+    end if;
+    Fn := Parent(alpha[1]);
+    if not IsDivisibleBy(#Fn, q) then
+        error MAGMAFUNCTIONS_FormatError("MF_Dickson", < <"alpha", alpha>, <"q", q> >, "q must divide the order of the finite field containing the elements of alpha.");
+    end if;
+
+    n := #alpha;
+    M := ZeroMatrix(Fn, n, n);
+    for i in [1..#alpha] do
+        for j in [1..n] do
+            M[i][j] := alpha[i]^(q^(j-1));
+        end for;
+    end for;
+
+    D := ZeroMatrix(Fn, n, n);
+    //Now shift the j-th column down by j-1 positions.
+    for j in [1..n] do
+        for i in [1..n] do
+            D[i][j] := M[ (i - j) mod n +1][j];
+        end for;
+    end for;
+    return D;
+end function;
+MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
+    MAGMAFUNCTIONS_registery,
+    <"MF_Dickson(alpha,q)", "Given alpha = [alpha_1,...,alpha_n] a sequence of elements in a finite field, given q an integer dividing #Parent(alpha[1]), returns the Dickson matrix of alpha with respect to q.", "LINALG", "\talpha: sequence of elements in a finite field,\n\tq: integer.">
+);
+
+function MF_DualBasis(alpha)
+    /*
+        Given alpha = [alpha_1,...,alpha_n] a sequence of elements forming a GF(q) basis of GF(q^n), returns the dual basis beta = [beta_1,...,beta_n] such that Tr(alpha_i * beta_j) = delta_{ij} for all i,j in [1..n].
+    */
+    if Type(alpha) ne SeqEnum then
+        error MAGMAFUNCTIONS_FormatError("MF_DualBasis", < <"alpha", alpha> >, "alpha must be a sequence of elements in a finite field.");
+    end if;
+    if #alpha eq 0 then
+        error MAGMAFUNCTIONS_FormatError("MF_DualBasis", < <"alpha", alpha> >, "alpha must be a non-empty sequence of elements in a finite field.");
+    end if;
+    if Type(alpha[1]) ne FldFinElt then
+        error MAGMAFUNCTIONS_FormatError("MF_DualBasis", < <"alpha", alpha> >, "alpha must be a sequence of elements in a finite field.");
+    end if;
+    Fn := Parent(alpha[1]);
+    qn := #Fn;
+    n := #alpha;
+    q := Floor(qn^(1/n));
+    if q^n ne qn then
+        error MAGMAFUNCTIONS_FormatError("MF_DualBasis", < <"alpha", alpha> >, "The elements of alpha must be in a finite field GF(q^n) for some prime power q and positive integer n.");
+    end if;
+    M := ZeroMatrix(Fn, #alpha, n);
+    for i in [1..#alpha] do
+        for j in [1..n] do
+            M[i][j] := alpha[i]^(q^(j-1));
+        end for;
+    end for;
+    if Determinant(M) eq 0 then
+        error MAGMAFUNCTIONS_FormatError("MF_DualBasis", < <"alpha", alpha> >, "The elements of alpha must form a basis of GF(q^n) over GF(q).");
+    end if;
+    Minv := M^-1;
+    //Minv = Transpose( MF_Moore(beta,q) ) therefore beta is the first row of Minv.
+    beta := [Minv[1][j] : j in [1..n]];
+    return beta;
+end function;
+MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
+    MAGMAFUNCTIONS_registery,
+    <"MF_DualBasis(alpha)", "Given alpha = [alpha_1,...,alpha_n] a sequence of elements forming a GF(q) basis of GF(q^n), returns the dual basis beta = [beta_1,...,beta_n] such that Tr(alpha_i * beta_j) = delta_{ij} for all i,j in [1..n].", "LINALG", "\talpha: sequence of elements in a finite field.">
+);
+
+
+
+
+
 
 function MF_FirstHyperdet(TensorAsVector,n)
     /*
@@ -653,9 +792,10 @@ MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
 
 function MF_TensorProduct(T)
     /*
-        Given a tuple T = <T1,...,Tk> of vectors over the same field, 
-        returns the tensor product T1 otimes ... otimes Tk as a vector.
+        Given a tuple T = <T1,...,Tk> of vectors/vector-spaces/vector-subspaces over the same field, 
+        returns the tensor product T1 otimes ... otimes Tk as a vector/vector-space.
         If Ti is in VectorSpace(F,ni) for i in [1..k], then the output is in VectorSpace(F, n1*...*nk).
+        If Ti is a subspace of VectorSpace(F,ni) for i in [1..k], then the output is a subspace of VectorSpace(F, n1*...*nk).
         This function is compatible with the other tensor functions in this package.
     */
     if #T eq 0 then
@@ -668,7 +808,7 @@ function MF_TensorProduct(T)
 end function;
 MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
-    <"MF_TensorProduct(T)", "Given a tuple T = <T1,...,Tk> of vectors over the same field, returns the tensor product T1 otimes ... otimes Tk as a vector. If Ti is in VectorSpace(F,ni) for i in [1..k], then the output is in VectorSpace(F, n1*...*nk). This function is compatible with the other tensor functions in this package.", "LINALG", "\tT: tuple of vectors over the same field.">
+    <"MF_TensorProduct(T)", "Given a tuple T = <T1,...,Tk> of vectors/vector-spaces/vector-subspaces over the same field, returns the tensor product T1 otimes ... otimes Tk as a vector/vector-space.", "LINALG", "\tT: tuple of vectors/vector-spaces/vector-subspaces.">
 );
 
 function MF_Segre(N,q)
@@ -965,19 +1105,40 @@ procedure MF_TestTensorSliceSpaceDimension()
     printf "Tensor slice space dimension test passed for 100 random tests.\n";
 end procedure;
 
-function MF_TensorIsTensorRankOne(Ten,N)
+function MF_TensorIsRankOne(x,N)
     /*
-        Given Ten a tensor in VectorSpace(F,n1*...*nk) for some field F, given N = [n1,...,nk] a sequence of positive integers, returns true if Ten is of tensor rank 1, i.e. if it can be written as the tensor product of k vectors, and false otherwise.
-        The function checks if Ten has every slice space of dimension exactly one.
+        Given x a tensor in VectorSpace(F,n1*...*nk) for some field F, given N = [n1,...,nk] a sequence of positive integers, returns true if x is of tensor rank 1, i.e. if it can be written as the tensor product of k vectors, and false otherwise.
+        The function proceeds as follows:
+          1. It find one non-zero entry in the tensor (if not returns false)
+          2. It finds the k fibres crossing this entry.
+          3. It checks if x is exacly the tensor product of these k fibres, if not returns false, if yes returns true.
     */
-    if #N eq 0 then
-        error MAGMAFUNCTIONS_FormatError("MF_TensorIsTensorRankOne", < <"N", N>, <"Ten", Ten> >, "N must be a non-empty sequence of positive integers.");
+    
+    Nprod := &*N;
+    k := #N;
+
+    //Step 1: find a non-zero entry in the tensor
+    i_int := -1;
+    for ii_int in [1..Nprod] do
+        if x[ii_int] ne 0 then
+            i_int := ii_int;
+            break;
+        end if;
+    end for;
+    if i_int eq -1 then
+        return false;
     end if;
-    if Degree(Parent(Ten)) ne &*N then
-        error MAGMAFUNCTIONS_FormatError("MF_TensorIsTensorRankOne", < <"N", N>, <"Ten", Ten> >, "The degree of the ambient space of Ten must be n1*...*nk where N = [n1,...,nk].");
-    end if;
-    for j in [1..#N] do
-        if MF_TensorSliceSpaceDimension(Ten, N, j) ne 1 then
+    cst := x[i_int];
+
+    //Step 2: compute the k fibres crossing this entry
+    i := MF_IntToIntTuple(N, i_int - 1);
+    fibres := <MF_TensorContraction(x, N, [jj : jj in [1..k] | jj ne j], [i[jj] : jj in [1..k] | jj ne j]) : j in [1..k]>;
+    
+    //Step 3: check if x is exacly the tensor product of these k fibres
+    for ii_int in [1..Nprod] do
+        ii := MF_IntToIntTuple(N, ii_int - 1);
+        entry := &*[fibres[j][ii[j]] : j in [1..k]] * cst^(1-k);
+        if x[ii_int] ne entry then
             return false;
         end if;
     end for;
@@ -985,11 +1146,42 @@ function MF_TensorIsTensorRankOne(Ten,N)
 end function;
 MAGMAFUNCTIONS_registery := MAGMAFUNCTIONS_add(
     MAGMAFUNCTIONS_registery,
-    <"MF_TensorIsTensorRankOne(Ten,N)", "Given Ten a tensor in VectorSpace(F,n1*...*nk) for some field F, given N = [n1,...,nk] a sequence of positive integers, returns true if Ten is of tensor rank 1, i.e. if it can be written as the tensor product of k vectors, and false otherwise. The function checks if Ten has every slice space of dimension exactly one.", "LINALG", "\tTen: tensor in VectorSpace(F,n1*...*nk),\n\tN = [n1,...,nk]: non-empty sequence of positive integers.">
+    <"MF_TensorIsRankOne(x,N)", "Given x a tensor in VectorSpace(F,n1*...*nk) for some field F, given N = [n1,...,nk] a sequence of positive integers, returns true if x is of tensor rank 1, i.e. if it can be written as the tensor product of k vectors, and false otherwise.", "LINALG", "\tx: tensor in VectorSpace(F,n1*...*nk),\n\tN = [n1,...,nk]: non-empty sequence of positive integers.">
 );
-
-
-
+procedure MF_TestTensorIsRankOne()
+    /*
+        Takes low enough parameters. Computes the segre variety. Firsts checks that all elements of the segre variety are rank 1. Then takes random tensors and checks that the function returns true if and only if the tensor is in the segre variety.
+    */
+    q := Random([2,3,4,5,7,8]);
+    m := Random([2..10]);
+    N := [Random([2..5]) : i in [1..m]];
+    toolarge := true;
+    while toolarge do
+        if &*[q^N[j] -1 : j in [1..#N]]/(q-1)^(m-1) gt 10^5 then
+            q := Random([2,3,4,5,7,8,9,11,13,16]);
+            m := Random([2..10]);
+            N := [Random([2..10]) : i in [1..m]];
+        else
+            toolarge := false;
+        end if;
+    end while;
+    printf "Testing tensor rank 1 for N=%o and q=%o.\n", N, q;
+    Segre := MF_Segre(N, q);
+    printf "Testing all elements in the Segre variety...\n";
+    if exists(s){ s : s in Segre | not MF_TensorIsRankOne(s, N) } then
+        print "MF_TensorIsRankOne(\n%o\n)=false while tensor in Segre.\n", s;
+        error MAGMAFUNCTIONS_FormatError("MF_TestTensorIsRankOne", < <"N", N>, <"q", q>, <"Segre", Segre> >, "Tensor rank 1 test failed: an element of the Segre variety was not of tensor rank 1.");
+    end if;
+    printf "Testing 1000 random tensors...\n";
+    for tests in [1..1000] do
+        x := Random(VectorSpace(GF(q), &*N));
+        if MF_TensorIsRankOne(x, N) ne (x in Segre) then
+            print "MF_TensorIsRankOne(\n%o\n) =!= (x in Segre).\n", x;
+            error MAGMAFUNCTIONS_FormatError("MF_TestTensorIsRankOne", < <"N", N>, <"q", q>, <"x", x> >, "Tensor rank 1 test failed: the function returned a different result than the membership test in the Segre variety.");
+        end if;
+    end for;
+    printf "Tensor rank 1 test passed for the Segrevariety and 1000 random tests.\n";
+end procedure;
 
 
 
@@ -1201,4 +1393,5 @@ procedure MAGMAFUNCTIONS_all_info()
     for i in [1..#MAGMAFUNCTIONS_registery[1]] do
         MAGMAFUNCTIONS_info(i);
     end for;
+
 end procedure;
